@@ -45,7 +45,7 @@ npm run start:dev
 
 ## How to Contribute
 
-We welcome contributions from the open-source community to help with the migration of Rentalog's tech stack to React.js and Next.js. Here's how you can contribute:
+We welcome contributions from the open-source community to help with the development od dashify. Here's how you can contribute:
 
 1. Fork the repository by clicking the "Fork" button in the upper right corner of this page.
 2. Clone your forked repository to your local machine:   
