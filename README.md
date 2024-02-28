@@ -7,13 +7,13 @@
 
 This repository contains the code for a mobile app React Native (Android and iOS), desktop app Electron (Windows), and server app (Node.js with NestJS).
 
-## Mobile app
+<!-- ## Mobile app
 
 The mobile app is built with React Native and uses the Expo framework. It is a cross-platform app that can be deployed to both Android and iOS devices.
 
 ## Desktop app
 
-The desktop app is built with Electron and uses the React framework. It is a cross-platform app that can be deployed to Windows, macOS, and Linux devices.
+The desktop app is built with Electron and uses the React framework. It is a cross-platform app that can be deployed to Windows, macOS, and Linux devices. -->
 
 ## Server
 
@@ -23,7 +23,7 @@ The server app is built with Node.js and NestJS. It is a REST API that provides 
 
 To get started, clone this repository to your local machine. Then, install the dependencies for each app:
 
-### Mobile
+<!-- ### Mobile
 
 ```bash
 cd mobile
@@ -35,7 +35,7 @@ npm expo start
 ```bash
 cd desktop
 npm run dev
-```
+``` -->
 
 ### Server
 ```bash

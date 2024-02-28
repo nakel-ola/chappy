@@ -1,0 +1,182 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Chats {
+  id          String              @id @unique
+  disabled    Boolean             @default(false)
+  createdAt   DateTime            @default(now())
+  updatedAt   DateTime
+  name        String?
+  image       String?
+  description String?
+  type        ChatTypeEnum        @default(chat)
+  visibility  ChatVisibilityEnum?
+  ChatsUser   ChatsUser[]
+  messages    messages[]
+}
+
+model ChatsUser {
+  id      String  @id @unique
+  admin   Boolean @default(false)
+  chatsId String?
+  uid     String
+  Chats   Chats?  @relation(fields: [chatsId], references: [id], onDelete: Cascade)
+}
+
+model Friends {
+  id        String   @id @unique
+  friendId  String
+  chatId    String
+  pinned    Boolean  @default(false)
+  archive   Boolean  @default(false)
+  createdAt DateTime @default(now())
+  blocked   Boolean  @default(false)
+  disabled  Boolean  @default(false)
+  usersId   String?
+  users     users?   @relation(fields: [usersId], references: [id])
+}
+
+model FriendsRequest {
+  id      String          @id @unique
+  uid     String
+  type    RequestTypeEnum
+  usersId String?
+  users   users?          @relation(fields: [usersId], references: [id])
+}
+
+model Groups {
+  id        String   @id @unique
+  chatId    String
+  pinned    Boolean  @default(false)
+  archive   Boolean  @default(false)
+  createdAt DateTime @default(now())
+  disabled  Boolean  @default(false)
+  blocked   Boolean  @default(false)
+  usersId   String?
+  users     users?   @relation(fields: [usersId], references: [id])
+}
+
+model Media {
+  id         String    @id @unique
+  url        String
+  type       MediaType
+  messagesId String?
+  messages   messages? @relation(fields: [messagesId], references: [id], onDelete: Cascade)
+}
+
+model Meetings {
+  id                   String                 @id @unique
+  name                 String
+  meetingDate          DateTime
+  joinType             JoinTypeEnum
+  callType             CallTypeEnum
+  createdAt            DateTime               @default(now())
+  updatedAt            DateTime
+  MeetingsParticipants MeetingsParticipants[]
+}
+
+model MeetingsParticipants {
+  meetingId String?
+  uid       String
+  admin     Boolean   @default(false)
+  id        String    @id @unique
+  Meetings  Meetings? @relation(fields: [meetingId], references: [id], onDelete: Cascade)
+}
+
+model Reaction {
+  id        String    @id @unique
+  reaction  String
+  messageId String?
+  userIds   String[]
+  messages  messages? @relation(fields: [messageId], references: [id], onDelete: Cascade)
+}
+
+model messages {
+  id         String      @id @unique
+  senderId   String
+  receiverId String
+  type       MessageType
+  captionRef String?
+  message    String?
+  gifs       String?
+  sticker    String?
+  seen       Boolean     @default(false)
+  createdAt  DateTime    @default(now())
+  updatedAt  DateTime
+  chatId     String?
+  Media      Media[]
+  Reaction   Reaction[]
+  Chats      Chats?      @relation(fields: [chatId], references: [id], onDelete: Cascade)
+}
+
+model users {
+  id             String           @id @unique
+  email          String           @unique
+  name           String?
+  displayName    String           @unique
+  photoURL       String?
+  bio            String?
+  gender         Gender?
+  birthday       DateTime?        @db.Date
+  password       String
+  createdAt      DateTime         @default(now())
+  updatedAt      DateTime
+  disabled       Boolean          @default(false)
+  Friends        Friends[]
+  FriendsRequest FriendsRequest[]
+  Groups         Groups[]
+}
+
+enum CallTypeEnum {
+  voice
+  video
+}
+
+enum ChatTypeEnum {
+  group
+  chat
+}
+
+enum ChatVisibilityEnum {
+  public
+  private
+}
+
+enum Gender {
+  Male
+  Female
+  none
+}
+
+enum JoinTypeEnum {
+  anyone
+  selected
+}
+
+enum MediaType {
+  image
+  video
+  audio
+}
+
+enum MessageType {
+  text
+  media
+  audio
+  file
+  voicenote
+  textcaption
+  voicenotecaption
+  mediacaption
+}
+
+enum RequestTypeEnum {
+  sent
+  received
+}
